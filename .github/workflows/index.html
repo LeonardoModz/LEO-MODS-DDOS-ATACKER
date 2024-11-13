@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>LEO MODS LUA OFUSCADOR</title>
+    <link rel="canonical" href="https://lua-obfuscator.netlify.app" />
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <style>
+        body {
+    body {
+    font-family: "Arial", sans-serif;
+    background-color: #101010; /* Fundo bem escuro */
+    color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #1a1a1a; /* Fundo escuro e neutro */
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 36px;
+    color: #ff3d00; /* Cor laranja forte para o título */
+    text-transform: uppercase; /* Deixa o título mais chamativo */
+}
+
+form {
+    text-align: center;
+    margin-top: 30px;
+}
+
+label {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #f1f1f1;
+}
+
+input[type="file"] {
+    padding: 16px;
+    border: 2px solid #ff3d00; /* Bordas laranja fortes */
+    border-radius: 10px;
+    background-color: #2c2c2c; /* Escuro para inputs */
+    color: #f7f7f7;
+    font-size: 18px;
+}
+
+input[type="submit"] {
+    background-color: #6200ea; /* Roxo vibrante para botões */
+    color: #ffffff;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+input[type="submit"]:hover {
+    background-color: #3700b3; /* Roxo mais escuro para o hover */
+    transform: scale(1.05);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 28px;
+    color: #ffeb3b; /* Amarelo vibrante para subtítulos */
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: #2c2c2c;
+    border-radius: 10px;
+    padding: 25px;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    color: #f1f1f1;
+    margin-top: 30px;
+    max-width: 100%;
+    overflow-x: auto;
+    user-select: none;
+    pointer-events: none;
+}
+
+#downloadButton {
+    background-color: #ff5722; /* Laranja mais intenso para o botão de download */
+    color: #ffffff;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: none;
+    margin: 40px auto;
+    font-size: 18px;
+}
+
+#downloadButton:hover {
+    background-color: #e64a19; /* Tom mais escuro para hover */
+    transform: scale(1.05);
+}
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>LEO MODS LUA OFUSCADOR</h1>
+        <form id="luaForm">
+            <label for="luaFile">ESCOLHE ALGUM ARQUIVO LUA:</label>
+            <input type="file" id="luaFile" accept=".lua">
+            <br>
+            <input type="submit" value="OFUSCAR">
+        </form>
+        <button id="downloadButton">ABAIXAR</button>
+        <h2></h2>
+        <pre id="encodedOutput" readonly>O CÓDIGO OFUSCADO APARECERÁ AQUI APÓS A OFUSCACAO </pre>
+    </div>
+    <script>
+        document.getElementById("luaForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const luaFile = document.getElementById("luaFile").files[0];
+            if (!luaFile) {
+                const encodedOutput = document.getElementById("encodedOutput");
+                encodedOutput.textContent = "SELECIONE ALGUM ARQUIVO!!.";
+                document.getElementById("downloadButton").style.display = "none";
+            } else {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const luaCode = e.target.result;
+                    minifyAndObfuscate(luaCode);
+                };
+                reader.readAsText(luaFile);
+            }
+        });
+
+        function minifyAndObfuscate(luaCode) {
+            const minifiedLua = luaCode.replace(/--.*$/gm, '').replace(/\s+/g, ' ');
+            const encoded = minifiedLua.replace(/./g, function (bb) {
+                const byteValue = bb.charCodeAt(0);
+                return "\\" + byteValue;
+            });
+            const loadstringCall = `--[[
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO MODS LUA OBFUSCATOR</title>
+</head>
+<body>
+    <h1>LEO MODS LUA OFUSCADOR</h1>
+    <p>Digite o código Lua que deseja ofuscar:</p>
+    <textarea id="luaInput" rows="10" cols="50"></textarea><br><br>
+
+    <button onclick="ofuscarScript()">Ofuscar e Baixar Script</button><br><br>
+
+    <p>Script Ofuscado:</p>
+    <textarea id="encodedOutput" rows="10" cols="50" readonly></textarea><br><br>
+
+    <button id="downloadButton" style="display: none;">Baixar Script Ofuscado</button>
+
+    <script>
+    loadstring("\45\45\90\65\15\35\65\75") --LVL1
+loadstring("\45\45\90\65\15\35\90\105\45\70\65\110") --LVL2
+loadstring("\42\67\89\01\04\21\88\24\100\09\05\13\133\109\27\86\90\23\54\48\03\91\23") --LVL3
+loadstring("\21\65\12\53\13\64\28\72\19\95\64\81\82\78\28\86\42\52\76\111\94\121\130\45\12\144\98\001\04\91\58", true) --LVL4
+loadstring("\21\65\12\53\13\64\28\72\19\95\64\81\82\78\28\86\42\52\76\111\94\121\130\45\12\144\98\001\04\91\58\42\67\89\01\04\21\88\24\100\09\05\13\133\109\27\86\90\23\54\48\03\91\23", true then do "\45\45\45\65\15\45\45\105\45\70\65\110\45\45\45\95\35", elseif "45" then do "\45\45\45\45\15\35\65\75", true)()()()
+
+            // Habilita o botão de download e configura o evento de clique para baixar o arquivo
+            const downloadButton = document.getElementById("downloadButton");
+            downloadButton.style.display = "block";
+            downloadButton.onclick = function() {
+                const encodedBlob = new Blob([loadstringCall], { type: "text/plain;charset=utf-8" });
+                const downloadLink = document.createElement("a");
+                downloadLink.href = URL.createObjectURL(encodedBlob);
+                downloadLink.download = "gabbofuscador.lua";
+                downloadLink.style.display = "none";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            };
+        }
+    </script>
+</body>
+  </html>
+  
